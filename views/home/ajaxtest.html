@@ -1,0 +1,46 @@
+<h1>Home</h1>
+{{#each posts }}
+{{this.title}}
+{{/each}}
+
+<div id="error-group">
+<ul id="errors"></ul>
+</div>
+
+<form action="/product/create" method="POST">
+    <input type="text" id="name" name="name">
+    <input type="text" id="email" name="email">
+    <input type="text" id="password" name="password">
+    <button type="button" id="signup-btn">Save</button>
+</form>
+
+<script>  
+$('#signup-btn').click(function () {
+  $.ajax({
+    url: '/validation',
+    type: 'POST',
+    cache: false,
+    data: {
+      name: $('#name').val(),
+      email: $('#email').val(),
+      password: $('#password').val(),
+    },
+    success: function () {
+      $('#error-group').css('display', 'none');
+      alert('Your submission was successful');
+    },
+    error: function (data) {
+      $('#error-group').css('display', 'block');
+      var errors = JSON.parse(data.responseText);
+      var errorsContainer = $('#errors');
+      errorsContainer.innerHTML = '';
+      var errorsList = '';
+
+      for (var i = 0; i < errors.length; i++) {
+        errorsList += '<li>' + errors[i].msg + '</li>';
+      }
+      errorsContainer.html(errorsList);
+    }
+  });
+});
+</script>

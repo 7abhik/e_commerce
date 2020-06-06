@@ -1,0 +1,175 @@
+
+    <style>
+        .img-thumbnail {
+            max-width: 50%;
+            height: 10%;
+        }
+        table.table th i {
+        font-size: 13px;
+        margin: 0 5px;
+        cursor: pointer;
+    }
+    table.table th:last-child {
+        width: 100px;
+    }
+    table.table td a {
+		cursor: pointer;
+        display: inline-block;
+        margin: 0 5px;
+		min-width: 24px;
+    }    
+	table.table td a.add {
+        color: #27C46B;
+    }
+    table.table td a.edit {
+        color: #FFC107;
+    }
+    table.table td a.delete {
+        color: #E34724;
+    }
+    table.table td i {
+        font-size: 19px;
+    }
+	table.table td a.add i {
+        font-size: 24px;
+    	margin-right: -1px;
+        position: relative;
+        top: 3px;
+    }    
+    </style>
+
+    <div>
+        <button type="button" data-toggle="modal" data-target="#addProductModal" class="btn btn-primary">Add
+            New</button>
+    </div>
+
+    <!-- <table class="table" id="product-table"> -->
+    <table class="table" id="product-table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">S.No.</th>
+                <th scope="col">Image</th>
+                <th scope="col">Name</th>
+                <th scope="col">SKU</th>
+                <th scope="col">Price</th>
+                <th scope="col">Weight</th>
+                <th scope="col">Created On/<br>Updated On</th>
+                <th scope="col">In Stock</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <% products.forEach((product,index)=>{%>
+            <tr>
+                <th scope="row"><%= index+1 %></th>
+                <td><img src="<%= (product.ProductThumb).split('public').pop(1)%>"
+                        onerror="this.src='/uploads/images/noimage.jpg'" class="img-thumbnail">
+                </td>
+                <td><%= product.ProductName%></td>
+                <td><%= product.ProductSKU%></td>
+                <td><%= product.ProductPrice%></td>
+                <td><%= product.ProductWeight%></td>
+                <td><%= date.format(product.ProductCreatedDate,'DD MMM YY')%><br><%= date.format(product.ProductUpdatedDate,'DD MMM YY')%>
+                </td>
+                <td><%= product.ProductStock%></td>
+                <td>
+                    <a class="edit" title="Edit" id="edit" onclick="edit(<%= product.ProductID%>)" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                    <a class="delete" title="Delete" id="delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                </td>
+            </tr>
+            <%})%>
+        </tbody>
+    </table>
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add New</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="uploadImage" enctype="multipart/form-data" action="/product/create" method="POST">
+                        <div class="form-group">
+                            <label for="name">Product Name</label>
+                            <input type="text" class="form-control" id="name">
+                        </div>
+                        <div class="form-group">
+                            <label for="image">Product Image</label>
+                            <input type="file" class="form-control" name="imagename" id="image" accept="image/*">
+                        </div>
+                        <div class="form-group">
+                            <label for="skuid">Product SKU ID</label>
+                            <input type="text" class="form-control" id="skuid">
+                        </div>
+                        <div class="form-group">
+                            <label for="price">Price</label>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">₹</span>
+                                <input type="number" class="form-control" id="price">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Product Category</label>
+                            <select class="form-control form-control-lg" id="category">
+                                <option value="1">Wearable</option>
+                                <option value="2">Consumable</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="subcategory">Product Sub Category</label>
+                            <select class="form-control form-control-lg" id="subcategory">
+                                <option value="1">Wearable</option>
+                                <option value="2">Consumable</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="color">Product Colors</label>
+                            <select class="form-control form-control-lg" id="color">
+                                <option value="1">Red</option>
+                                <option value="2">Green</option>
+                                <option value="3">Yellow</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="munit">Measuring Unit</label>
+                            <input type="text" class="form-control" id="munit">
+                        </div>
+                        <div class="form-group">
+                            <label for="weight">Wight</label>
+                            <div class="input-group-append">
+                                <input type="number" class="form-control" id="weight">
+                                <span class="input-group-text">Grams</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="stock">Total Stock</label>
+                            <input type="number" class="form-control" id="stock">
+                        </div>
+                        <div class="form-group">
+                            <label for="sdesc">Short Description</label>
+                            <input type="text" class="form-control" id="sdesc">
+                        </div>
+                        <div class="form-group">
+                            <label for="lgdesc">Long Description</label>
+                            <textarea type="textarea" max="1000" class="form-control" id="lgdesc"></textarea>
+                        </div>
+
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%- include('./product.script.html') %>
+
