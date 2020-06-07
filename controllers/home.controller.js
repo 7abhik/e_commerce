@@ -28,6 +28,7 @@ class HomeController {
             check('password', 'Your password must be at least 5 characters').not().isEmpty(),
         ], this.validation)
         this.router.post('/ajaxform', upload.single('imagename'), this.ajaxform)
+        this.router.get('/imageuploader', this.imageUploader)
     }
     async getPost(req, res, next) {
         let posts = [
@@ -61,6 +62,10 @@ class HomeController {
 
     indexPage(req, res, next) {
         res.status(200).render('home/index', { title: 'WinkLix' })
+    }
+
+    imageUploader(req,res,next){
+        res.render('home/imageuploader')
     }
 }
 exports.HomeController = HomeController;

@@ -1,11 +1,10 @@
 <script>
-    $(document).ready(function () {
-        $('#product-table').DataTable();
-    });
+  
+$('#new-product').click(function(){
+    $("#product-form").attr('action', '/product/create');
+})
 
-
-
-    $('.uploadImage').submit(function (e) {
+    $('.add-new-product').submit(function (e) {
         e.preventDefault();
         var data = {
             name: $('#name').val(),
@@ -48,6 +47,8 @@
     // })
 
     function edit(id) {
+        $("#product-form").attr('action', '/product/update/'+id);
+        // $("#product-form").attr('method', 'POST');
         $.ajax({
             url: '/product/edit/' + id,
             type: 'GET',
@@ -57,15 +58,15 @@
                 $('#name').val(product.ProductName);
                 $('#price').val(product.ProductPrice);
                 $('#skuid').val(product.ProductSKU);
-                $('#category').val(product.ProductCategory);
-                $('#subcategory').val(product.ProductSubCategory);
-                $('#color').val(product.ProductColor);
+                $('#category').val(product.ProductCategoryID);
+                $('#subcategory').val(product.ProductSubCategoryID);
+                $('#color').val(product.ProductColorOptions);
                 $('#munit').val(product.ProductMeasurmentUnit);
                 $('#weight').val(product.ProductWeight);
                 $('#stock').val(product.ProductStock);
                 $('#sdesc').val(product.ProductShortDesc);
                 $('#lgdesc').val(product.ProductLongDesc);
-                $('#image').val(product.ProductImage)
+                $('#product-image').attr('src',product.ProductThumb.split('public').pop(1))
             }            
         })
         $('#addProductModal').modal('toggle')

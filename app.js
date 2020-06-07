@@ -3,6 +3,7 @@ require('dotenv/config')
 const { sequelize } = require('./connections/sequelize.connection');
 var expressLayouts = require('express-ejs-layouts');
 const ejs = require('ejs')
+var bodyParser = require('body-parser')
 
 module.exports = class App {
     constructor(appInit) {
@@ -19,6 +20,13 @@ module.exports = class App {
     middleWare(middleWares) {
         middleWares.forEach((middleWare) => {
             this.app.use(middleWare);
+            // this.app.use(bodyParser.json({
+            //     limit: '100mb'
+            // }));
+            // this.app.use(bodyParser.urlencoded({
+            //     limit: '100mb',
+            //     extended: true
+            // }));
         });
 
     }

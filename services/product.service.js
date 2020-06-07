@@ -3,8 +3,8 @@ const { Product, Op } = require('../models/product.model')
 class ProductService {
     constructor() { }
 
-    async createProduct(product) {
-        return await Product.create({ ProductSKU: product.skuid, ProductName: product.name, ProductPrice: product.price, ProductWeight: product.weight, ProductShortDesc: product.sdesc, ProductLongDesc: product.lgdesc, ProductThumb: req.file.path, ProductImage: req.file.path, ProductCategoryID: product.category, ProductSubCategoryID: product.subcategory, ProductStock: product.stock, ProductColorOptions: product.color, ProductMeasurmentUnit: product.munit, ProductLive: 1 })
+    async createProduct(product, productImage) {
+        return await Product.create({ ProductSKU: product.skuid, ProductName: product.name, ProductPrice: product.price, ProductWeight: product.weight, ProductShortDesc: product.sdesc, ProductLongDesc: product.lgdesc, ProductThumb: productImage.path, ProductImage: productImage.path, ProductCategoryID: product.category, ProductSubCategoryID: product.subcategory, ProductStock: product.stock, ProductColorOptions: product.color, ProductMeasurmentUnit: product.munit, ProductLive: 1 })
     };
 
     async getProductList(categoryIDs) {
@@ -15,16 +15,11 @@ class ProductService {
         return await Product.findAll(query)
     };
 
-    async updateProduct(userID) {
-        return await Product.update(
-            {
-                isBlocked: 1
-            }, {
-            where: { userID: userID }
-        })
+    async updateProduct(product, productImage, productID) {
+        return await Product.update({ ProductSKU: product.skuid, ProductName: product.name, ProductPrice: product.price, ProductWeight: product.weight, ProductShortDesc: product.sdesc, ProductLongDesc: product.lgdesc, ProductThumb: productImage.path, ProductImage: productImage.path, ProductCategoryID: product.category, ProductSubCategoryID: product.subcategory, ProductStock: product.stock, ProductColorOptions: product.color, ProductMeasurmentUnit: product.munit, ProductLive: 1 }, { where: { ProductID: productID } })
     }
     async editProduct(productID) {
-        return await Product.findOne({ ProductID: productID }, { raw: true })
+        return await Product.findOne({where:{ ProductID: productID }}, { raw: true })
     }
 }
 
