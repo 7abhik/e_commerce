@@ -20,13 +20,13 @@ module.exports = class App {
     middleWare(middleWares) {
         middleWares.forEach((middleWare) => {
             this.app.use(middleWare);
-            // this.app.use(bodyParser.json({
-            //     limit: '100mb'
-            // }));
-            // this.app.use(bodyParser.urlencoded({
-            //     limit: '100mb',
-            //     extended: true
-            // }));
+            this.app.use(bodyParser.json({
+                limit: '100mb'
+            }));
+            this.app.use(bodyParser.urlencoded({
+                limit: '100mb',
+                extended: true
+            }));
         });
 
     }

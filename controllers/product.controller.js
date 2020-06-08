@@ -22,7 +22,8 @@ class ProductController {
     }
 
     initRoutes() {
-        this.router.post('/create', upload.single('imagename'), this.createProduct);
+        this.router.post('/save', upload.single('imagename'), this.saveProduct);
+        this.router.get('/create', this.createProduct);
         this.router.get('/list', this.getProductList);
         this.router.post('/update/:id', upload.single('imagename'), this.updateProduct);
         this.router.get('/edit/:id', this.editProduct);
@@ -30,10 +31,19 @@ class ProductController {
     }
 
     async createProduct(req, res, next) {
+        try {
+            res.status(200).render('product/product_create',{product:{},action:'/product/save'})
+        } catch (error) {
+            console.log(error);
+            next(new ErrorHandler(400, 'Page under construction', error));
+        }
+    };
+
+    async saveProduct(req, res, next) {
         cl(req.body);
         cl(req.file);
         try {
-            let product = await productService.createProduct(req.body, req.file)
+            let product = await productService.saveProduct(req.body)
             res.status(200).json({ data: 'data saved' })
         } catch (error) {
             console.log(error);
@@ -56,9 +66,9 @@ class ProductController {
         cl(req.body)
         cl(req.file)
         try {
-            let productID = await productService.updateProduct(req.body, req.file, req.params.id)
+            let productID = await productService.updateProduct(req.body,req.params.id)
             cl(productID);
-            res.status(200).send('Updtaed:' + productID)
+            res.status(200).redirect('/product/list')
         } catch (error) {
             next(new ErrorHandler(500, 'Internal Server Error', error));
         }
@@ -66,16 +76,14 @@ class ProductController {
     async editProduct(req, res, next) {
         try {
             let product = await productService.editProduct(req.params.id)
-            res.status(200).json(product);
+            res.status(200).render('product/product_create',{product,action:'/product/update/'+req.params.id});
         } catch (error) {
             next(new ErrorHandler(500, 'Internal Server Error', error))
         }
     }
     async imageUploader(req, res, nexr) {
-        cl(req.files)             
         cl(req.file)
-        cl(req.body)
-        res.status(200).json({status:'success'})
+        res.status(200).json({status:'success',imagePath:req.file.path})
     }
 }
 exports.ProductController = ProductController;

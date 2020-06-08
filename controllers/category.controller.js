@@ -1,8 +1,8 @@
 const { ErrorHandler } = require('../helpers/error');
 const express = require("express");
-const {CategoryService} = require('../services/category.service')
+const { CategoryService } = require('../services/category.service')
 const categoryService = new CategoryService();
-
+const date = require('date-and-time');
 
 class CategoryController {
     constructor() {
@@ -17,16 +17,18 @@ class CategoryController {
     }
     async saveCategory(req, res, next) {
         console.log('in category');
-        res.render('category/category',{data:'data'})
+        res.render('category/category', { data: 'data' })
         // next(new ErrorHandler(400, 'Page under construction'));
     };
 
     async getCategoryList(req, res, next) {
+        console.log('in category');
         try {
-            let category = await categoryService.getCategoryList();
-            res.status(200).send(JSON.stringify(users));
+            let categories = await categoryService.getCategoryList();
+            cl(categories)
+            res.status(200).render('category/category',{categories:categories,date:date});
         } catch (error) {
-            next(new ErrorHandler(500, 'Internal Server Error',error));
+            next(new ErrorHandler(500, 'Internal Server Error', error));
         }
     };
 
@@ -35,7 +37,7 @@ class CategoryController {
             let categoryID = await categoryService.updateCategory(categoryID)
             res.status(200).send('Updtaed:' + req.query.id)
         } catch (error) {
-            next(new ErrorHandler(500, 'Internal Server Error',error));
+            next(new ErrorHandler(500, 'Internal Server Error', error));
         }
     }
 }

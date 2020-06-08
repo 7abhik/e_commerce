@@ -6,10 +6,18 @@ Category = sequelize.define('productcategories', {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
-    }, CategoryName: Sequelize.STRING
+    }, CategoryName: Sequelize.STRING, CreatedOn: Sequelize.DATE, UpdatedOn: Sequelize.DATE
+});
+SubCategory = sequelize.define('productsubcategories', {
+    SubCategoryID: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+    }, CategoryID: Sequelize.INTEGER, SubCategoryName: Sequelize.STRING, CreatedOn: Sequelize.DATE, UpdatedOn: Sequelize.DATE
 });
 module.exports = {
     Category: Category,
+    SubCategory:SubCategory,
     sequelize: sequelize,
-     Op: Sequelize.Op
+    Op: Sequelize.Op
 }

@@ -3,8 +3,8 @@ const { Product, Op } = require('../models/product.model')
 class ProductService {
     constructor() { }
 
-    async createProduct(product, productImage) {
-        return await Product.create({ ProductSKU: product.skuid, ProductName: product.name, ProductPrice: product.price, ProductWeight: product.weight, ProductShortDesc: product.sdesc, ProductLongDesc: product.lgdesc, ProductThumb: productImage.path, ProductImage: productImage.path, ProductCategoryID: product.category, ProductSubCategoryID: product.subcategory, ProductStock: product.stock, ProductColorOptions: product.color, ProductMeasurmentUnit: product.munit, ProductLive: 1 })
+    async saveProduct(product) {
+        return await Product.create({ ProductSKU: product.skuid, ProductName: product.name, ProductPrice: product.price, ProductWeight: product.weight, ProductShortDesc: product.sdesc, ProductLongDesc: product.lgdesc, ProductThumb: product.productImage, ProductImage: product.productImage, ProductCategoryID: product.category, ProductSubCategoryID: product.subcategory, ProductStock: product.stock, ProductColorOptions: product.color, ProductMeasurmentUnit: product.munit, ProductLive: 1 })
     };
 
     async getProductList(categoryIDs) {
@@ -15,8 +15,8 @@ class ProductService {
         return await Product.findAll(query)
     };
 
-    async updateProduct(product, productImage, productID) {
-        return await Product.update({ ProductSKU: product.skuid, ProductName: product.name, ProductPrice: product.price, ProductWeight: product.weight, ProductShortDesc: product.sdesc, ProductLongDesc: product.lgdesc, ProductThumb: productImage.path, ProductImage: productImage.path, ProductCategoryID: product.category, ProductSubCategoryID: product.subcategory, ProductStock: product.stock, ProductColorOptions: product.color, ProductMeasurmentUnit: product.munit, ProductLive: 1 }, { where: { ProductID: productID } })
+    async updateProduct(product,productID) {
+        return await Product.update({ ProductSKU: product.skuid, ProductName: product.name, ProductPrice: product.price, ProductWeight: product.weight, ProductShortDesc: product.sdesc, ProductLongDesc: product.lgdesc, ProductThumb: product.productImage, ProductImage: product.productImage, ProductCategoryID: product.category, ProductSubCategoryID: product.subcategory, ProductStock: product.stock, ProductColorOptions: product.color, ProductMeasurmentUnit: product.munit, ProductLive: 1 }, { where: { ProductID: productID } })
     }
     async editProduct(productID) {
         return await Product.findOne({where:{ ProductID: productID }}, { raw: true })

@@ -23,13 +23,10 @@
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="page-header">
                 <h2 class="pageheader-title">Product List</h2>
-                <p class="pageheader-text">Proin placerat ante duiullam scelerisque a velit ac porta, fusce sit amet
-                    vestibulum mi. Morbi lobortis pulvinar quam.</p>
                 <div class="page-breadcrumb">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a></li>
-                            <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Tables</a></li>
+                            <li class="breadcrumb-item"><a href="/" class="breadcrumb-link">Dashboard</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Data Tables</li>
                         </ol>
                     </nav>
@@ -38,15 +35,16 @@
         </div>
     </div>
 
+
+
+
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="card">
                 <div class="card-header">
                     <h5 class="mb-0"></h5>
                     <p></p>
-                    <button type="button" data-toggle="modal" id="new-product" data-target="#addProductModal"
-                        class="btn btn-primary">Add
-                        New</button>
+                    <a href="/product/create"  id="new-product" class="btn btn-primary">Add New</a>
 
                 </div>
                 <div class="card-body">
@@ -54,13 +52,13 @@
                         <table id="example" class="table table-striped table-bordered second" style="width:100%">
                             <thead>
                                 <tr>
+                                    <th>Image</th>
                                     <th>Name</th>
-                                    <th>Position</th>
-                                    <th>Office</th>
-                                    <th>Age</th>
-                                    <th>Start date</th>
-                                    <th>Salary</th>
-                                    <th>Salaryy</th>
+                                    <th>SKU ID</th>
+                                    <th>Price</th>
+                                    <th>Weight(g)</th>
+                                    <th>Created/<br>Updated On</th>
+                                    <th>In Stock</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -68,36 +66,25 @@
 
                                 <% products.forEach((product,index)=>{%>
                                 <tr>
-                                    <td
-                                        style="width:50px; height:50px; background-color:red;text-align:center; vertical-align:middle">
+                                    <td style="text-align:center; vertical-align:middle">
                                         <img src="<%= (product.ProductThumb).split('public').pop(1)%>"
-                                            onerror="this.src='/uploads/images/noimage.jpg'"
-                                            style="max-height:100%; max-width:100%" />
+                                            onerror="this.src='/images/noimage.jpg'" height="100">
                                     </td>
                                     <td><%= product.ProductName%></td>
                                     <td><%= product.ProductSKU%></td>
                                     <td><%= product.ProductPrice%></td>
                                     <td><%= product.ProductWeight%></td>
-                                    <td><%= date.format(product.ProductCreatedDate,'DD MMM YY')%><br><%= date.format(product.ProductUpdatedDate,'DD MMM YY')%>
+                                    <td><%= date.format(product.ProductCreatedDate,'DD MMM YY')%>/<br><%= date.format(product.ProductUpdatedDate,'DD MMM YY')%>
                                     </td>
                                     <td><%= product.ProductStock%></td>
-                                    <td><a class="nav-link" id="edit" onclick="edit(<%= product.ProductID%>)"><i class="fas fa-edit
+                                    <td><a class="nav-link" id="edit" href="/product/edit/<%= product.ProductID%>"><i class="fas fa-edit
                                         "></i></a></td>
 
                                 </tr>
                                 <%})%>
 
                             </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Position</th>
-                                    <th>Office</th>
-                                    <th>Age</th>
-                                    <th>Start date</th>
-                                    <th>Salary</th>
-                                </tr>
-                            </tfoot>
+
                         </table>
                     </div>
                 </div>
@@ -107,9 +94,9 @@
 
 
     <!-- Modal -->
-    <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <!-- <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-dialog  modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Add New</h5>
@@ -123,18 +110,12 @@
                             <label for="name">Product Name</label>
                             <input type="text" class="form-control" id="name">
                         </div>
-                        <!-- <div class="form-group">
-                            <label for="image">Product Image</label>
-                            <input type="file" class="form-control" name="imagename" id="image" accept="image/*">
-                            <img src="" id="product-image" alt="">
-                        </div> -->
-                        <!-- <button type="button" data-toggle="modal" id="new-product-image" data-target="#modal"
-                            class="btn btn-primary">Add Image</button> -->
 
+                        <input type="hidden" name="productImage" id="productImage">
 
                         <label class="label" data-toggle="tooltip" title="Change your avatar">
-                            <img class="rounded" id="avatar"
-                                src="https://avatars0.githubusercontent.com/u/3456749?s=160" alt="avatar">
+                            <img class="rounded" id="avatar" src="/images/noimage.jpg" alt="avatar" width="auto"
+                                height="160">
                             <input type="file" class="sr-only" id="input" name="image" accept="image/*">
                         </label>
 
@@ -143,7 +124,6 @@
                                 aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
                         </div>
                         <div class="alert" role="alert"></div>
-
                         <div class="form-group">
                             <label for="skuid">Product SKU ID</label>
                             <input type="text" class="form-control" id="skuid">
@@ -210,7 +190,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
 
 
@@ -218,7 +198,8 @@
 
 
     <!-- Modal -->
-    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <!-- <div class="modal fade" id="crop-image-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -238,128 +219,11 @@
                 </div>
             </div>
         </div>
-    </div>
-    <script>
-        window.addEventListener('DOMContentLoaded', function () {
-            var avatar = document.getElementById('avatar');
-            var image = document.getElementById('image');
-            var input = document.getElementById('input');
-            var $progress = $('.progress');
-            var $progressBar = $('.progress-bar');
-            var $alert = $('.alert');
-            var $modal = $('#modal');
-            var cropper;
-
-            $('[data-toggle="tooltip"]').tooltip();
-
-            input.addEventListener('change', function (e) {
-                var files = e.target.files;
-                var done = function (url) {
-                    input.value = '';
-                    image.src = url;
-                    $alert.hide();
-                    $modal.modal('show');
-                };
-                var reader;
-                var file;
-                var url;
-
-                if (files && files.length > 0) {
-                    file = files[0];
-
-                    if (URL) {
-                        done(URL.createObjectURL(file));
-                    } else if (FileReader) {
-                        reader = new FileReader();
-                        reader.onload = function (e) {
-                            done(reader.result);
-                        };
-                        reader.readAsDataURL(file);
-                    }
-                }
-            });
-
-            $modal.on('shown.bs.modal', function () {
-                cropper = new Cropper(image, {
-                    autoCropArea: 0.5,
-                    ready: function () {
-                        //Should set crop box data first here
-                        var canvasData = cropper.getCanvasData();
-                        var cropBox = cropper.getCropBoxData()
-                        cropper.setCropBoxData(cropBox).setCanvasData(canvasData);
-                        // cropper.setCropBoxData(cropBoxData).setCanvasData(canvasData);
-                    }
-                });
-            }).on('hidden.bs.modal', function () {
-                cropper.destroy();
-                cropper = null;
-            });
-
-            document.getElementById('crop').addEventListener('click', function () {
-                var initialAvatarURL;
-                var canvas;
-
-                $modal.modal('hide');
-
-                if (cropper) {
-                    canvas = cropper.getCroppedCanvas({
-                        width: 160,
-                        height: 160,
-                    });
-                    initialAvatarURL = avatar.src;
-                    avatar.src = canvas.toDataURL();
-                    $progress.show();
-                    $alert.removeClass('alert-success alert-warning');
-                    canvas.toBlob(function (blob) {
-                        var formData = new FormData();
-                        formData.name = 'Abhishek'
-                        formData.append('imagename', blob, 'imagename.jpg');
-                        $.ajax('/product/image', {
-                            method: 'POST',
-                            data: formData,
-                            processData: false,
-                            contentType: false,
-
-                            xhr: function () {
-                                var xhr = new XMLHttpRequest();
-
-                                xhr.upload.onprogress = function (e) {
-                                    var percent = '0';
-                                    var percentage = '0%';
-
-                                    if (e.lengthComputable) {
-                                        percent = Math.round((e.loaded / e.total) * 100);
-                                        percentage = percent + '%';
-                                        $progressBar.width(percentage).attr('aria-valuenow', percent).text(percentage);
-                                    }
-                                };
-
-                                return xhr;
-                            },
-
-                            success: function () {
-                                $alert.show().addClass('alert-success').text('Upload success');
-                            },
-
-                            error: function () {
-                                avatar.src = initialAvatarURL;
-                                $alert.show().addClass('alert-warning').text('Upload error');
-                            },
-
-                            complete: function () {
-                                $progress.hide();
-                            },
-                        });
-                    });
-                }
-            });
-        });
-    </script>
-
-    <%- include('./product.script.html') %>
+    </div> -->
 
 
-
+ 
+ 
 
 </div>
 
@@ -375,6 +239,7 @@
 <link rel="stylesheet" type="text/css" href="/assets/vendor/datatables/css/fixedHeader.bootstrap4.css">
 
 <%- contentFor('footerLink') %>
+<script src="./product.js"></script>
 <script src="/assets/cropperjs/js/cropper.js"></script>
 <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
 <script src="/assets/vendor/slimscroll/jquery.slimscroll.js"></script>

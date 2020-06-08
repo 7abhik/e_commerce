@@ -1,0 +1,219 @@
+<div class="container-fluid  dashboard-content">
+    <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="page-header">
+                <h2 class="pageheader-title">Create New Product</h2>
+                <p class="pageheader-text"></p>
+                <div class="page-breadcrumb">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Forms</a></li>
+                            <!-- <li class="breadcrumb-item active" aria-current="page">Form Validations</li> -->
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="card">
+                <h5 class="card-header">Add New</h5>
+                <div class="card-body">
+                    <form class="needs-validation add-new-product" action="<%= action%>" enctype="multipart/form-data"
+                        id="product-form" method="POST" novalidate>
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 ">
+                                <label for="name">Product Name</label>
+                                <input type="text" value="<%= product.ProductName%>" class="form-control" id="name">
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                            </div>
+
+                            <input type="hidden" name="productImage" id="productImage">
+
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 ">
+                                <!-- part of image upload starts-->
+                                <%if(product.ProductImage){
+                                var imgg =product.ProductImage.split('public').pop(1)
+                                }else{
+                                var imgg = '/images/noimage.jpg'
+                                }%>
+                                <label class="label" data-toggle="tooltip" title="Change your avatar">
+                                    <img class="rounded" id="avatar" src="<%= imgg%>" alt="avatar" width="auto"
+                                height="160">
+                                <input type="file" class="sr-only" id="input" accept="image/*">
+                                </label>
+
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated"
+                                        role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%
+                                    </div>
+                                </div>
+                                <div class="alert" role="alert"></div>
+                                <!-- part of image upload ends -->
+                            </div>
+
+
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 ">
+                                <label for="skuid">Product SKU ID</label>
+                                <input type="text" class="form-control" id="skuid" value="<%= product.ProductSKU%>">
+                                <div class="invalid-feedback">
+                                    Please choose a username.
+                                </div>
+                            </div>
+
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 ">
+                                <label for="price">Price</label>
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">₹</span>
+                                    <input type="number" class="form-control" value="<%= product.ProductPrice%>" id="price">
+                                </div>
+
+                                <div class="invalid-feedback">
+                                    Please choose a username.
+                                </div>
+                            </div>
+
+
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 ">
+                                <label for="category">Product Category</label>
+                                <select class="form-control form-control-lg" value="<%= product.ProductCategoryID%>" id="category">
+                                    <option value="1">Wearable</option>
+                                    <option value="2">Consumable</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please choose a username.
+                                </div>
+                            </div>
+
+
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 ">
+                                <label for="subcategory">Product Sub Category</label>
+                                <select class="form-control form-control-lg" value="<%= product.ProductSubCategoryID%>"id="subcategory">
+                                    <option value="1">Wearable</option>
+                                    <option value="2">Consumable</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please choose a username.
+                                </div>
+                            </div>
+
+
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 ">
+                                <label for="color">Product Colors</label>
+                                <select class="form-control form-control-lg" value="<%= product.ProductColorOptions%>" id="color">
+                                    <option value="1">Red</option>
+                                    <option value="2">Green</option>
+                                    <option value="3">Yellow</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please choose a username.
+                                </div>
+                            </div>
+
+
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 ">
+
+                                <label for="munit">Measuring Unit</label>
+                                <input type="text" class="form-control" value="<%= product.ProductMeasurmentUnit%>" id="munit">
+                                <div class="invalid-feedback">
+                                    Please choose a username.
+                                </div>
+                            </div>
+
+
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 ">
+                                <label for="weight">Wight</label>
+                                <div class="input-group-append">
+                                    <input type="number" class="form-control" value="<%= product.ProductWeight%>"id="weight">
+                                    <span class="input-group-text">Grams</span>
+                                </div>
+
+                                <div class="invalid-feedback">
+                                    Please choose a username.
+                                </div>
+                            </div>
+
+
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 ">
+
+                                <label for="stock">Total Stock</label>
+                                <input type="number" class="form-control" value="<%= product.ProductStock%>" id="stock">
+                                <div class="invalid-feedback">
+                                    Please choose a username.
+                                </div>
+                            </div>
+
+
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 ">
+                                <label for="sdesc">Short Description</label>
+                                <input type="text" class="form-control" value="<%= product.ProductShortDesc%>" id="sdesc">
+
+                                <div class="invalid-feedback">
+                                    Please choose a username.
+                                </div>
+                            </div>
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 ">
+                                <label for="lgdesc">Long Description</label>
+                                <textarea type="textarea" max="1000" class="form-control" id="lgdesc"><%= product.ProductLongDesc%></textarea>
+                                <div class="invalid-feedback">
+                                    Please choose a username.
+                                </div>
+                            </div>
+
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 ">
+                                <a href="/product/list" class="btn btn-secondary">Close</a>
+                                <button class="btn btn-primary" type="submit">Save Product</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="crop-image-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">Crop the image</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="img-container">
+                        <img id="image" src="https://avatars0.githubusercontent.com/u/3456749">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="crop">Crop</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<%- contentFor('headerLink')%>
+<link rel="stylesheet" href="/assets/cropperjs/css/cropper.css">
+<link rel="stylesheet" href="/assets/vendor/bootstrap/css/bootstrap.min.css">
+<link href="/assets/vendor/fonts/circular-std/style.css" rel="stylesheet">
+<link rel="stylesheet" href="/assets/libs/css/style.css">
+<link rel="stylesheet" href="/assets/vendor/fonts/fontawesome/css/fontawesome-all.css">
+
+<%- contentFor('footerLink') %>
+<script src="/assets/cropperjs/js/cropper.js"></script>
+<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
+<script src="/assets/vendor/slimscroll/jquery.slimscroll.js"></script>
+<script src="/assets/vendor/parsley/parsley.js"></script>
+<script src="/assets/libs/js/main-js.js"></script>
+<script src="/product/product.js" defer></script>
+<script>
+    $('#form').parsley();
+</script>

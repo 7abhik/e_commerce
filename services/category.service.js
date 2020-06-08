@@ -1,4 +1,4 @@
-const { Category } = require('../models/category.model')
+const { Category, SubCategory, sequelize } = require('../models/category.model')
 class CategoryService {
 
     constructor() { }
@@ -7,7 +7,11 @@ class CategoryService {
     };
 
     async getCategoryList() {
-        return await Category.findAll()
+        let categoryArray = []
+        categoryArray.push(await Category.findAll({ raw: true }))
+        categoryArray.push(await sequelize.query('CALL get_subCategories();'))
+        // return cat
+        return categoryArray
     };
 
     async updateCategory(categoryID) {
