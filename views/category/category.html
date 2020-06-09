@@ -27,18 +27,20 @@
 
                 <div class="collapse" id="addcategory">
                     <div class="card card-body">
-                        <form id="form" data-parsley-validate="" novalidate="">
+                        <form id="categoryform" data-parsley-validate="" novalidate="">
                             <div class="form-group row">
-                                <label for="inputEmail2" class="col-3 col-lg-2 col-form-label text-right">Name</label>
+                                <label for="categoryname" class="col-3 col-lg-2 col-form-label text-right">Name</label>
                                 <div class="col-9 col-lg-10">
-                                    <input id="inputEmail2" type="text" required="" data-parsley-type="email"
+                                    <input id="categoryname" type="text" required="" data-parsley-type="text"
                                         placeholder="Category Name" class="form-control">
                                 </div>
                             </div>
                             <div class="col-sm-6 pl-0">
                                 <p class="text-right">
-                                    <button type="submit" class="btn btn-space btn-primary">Submit</button>
-                                    <button class="btn btn-space btn-secondary">Cancel</button>
+                                    <button type="button" id="categorysubmit"
+                                        class="btn btn-space btn-primary">Submit</button>
+                                    <button type="button" id="categorycancle"
+                                        class="btn btn-space btn-secondary">Cancel</button>
                                 </p>
                             </div>
                         </form>
@@ -52,6 +54,7 @@
                                     <th>#</th>
                                     <th>Category</th>
                                     <th>Created On</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -60,6 +63,8 @@
                                     <td><%= index+1%></td>
                                     <td><%= category.CategoryName%></td>
                                     <td><%= date.format(category.CreatedOn,'DD MMM YY')%></td>
+                                    <td><a class="nav-link" onclick="editCategory(<%= JSON.stringify(category)%>)"><i
+                                                class="fas fa-edit"></i></a></td>
                                 </tr>
                                 <%})%>
                                 </tfoot>
@@ -78,11 +83,11 @@
                 </div>
                 <div class="collapse" id="addsubcategory">
                     <div class="card card-body">
-                        <form id="form" data-parsley-validate="" novalidate="">
+                        <form id="subcategoryform" data-parsley-validate="" novalidate="">
                             <div class="form-group row">
-                                <label for="inputEmail2" class="col-3 col-lg-2 col-form-label text-right">Name</label>
+                                <label for="subcategory" class="col-3 col-lg-2 col-form-label text-right">Name</label>
                                 <div class="col-9 col-lg-10">
-                                    <input id="inputEmail2" type="text" required="" data-parsley-type="email"
+                                    <input id="subcategoryname" type="text" required="" data-parsley-type="text"
                                         placeholder="Subcategory Name" class="form-control">
                                 </div>
                             </div>
@@ -90,19 +95,21 @@
                                 <label for="inputPassword2"
                                     class="col-3 col-lg-2 col-form-label text-right">Category</label>
                                 <div class="col-9 col-lg-10">
-                                    <select name="" id="" class="form-control form-control-lg">
-                                        <option value="">category 1</option>
-                                        <option value="">category 2</option>
-                                        <option value="">category 3</option>
-                                        <option value="">category 4</option>
+                                    <select id="parentcategory" class="form-control form-control-lg">
+                                        <option selected disabled value="">Select Parent Category</option>
+                                        <% categories[0].forEach((category)=>{%>
+                                        <option value="<%= category.CategoryID%>"><%= category.CategoryName%></option>
+                                        <%})%>
                                     </select>
                                 </div>
                             </div>
 
                             <div class="col-sm-6 pl-0">
                                 <p class="text-right">
-                                    <button type="submit" class="btn btn-space btn-primary">Submit</button>
-                                    <button class="btn btn-space btn-secondary">Cancel</button>
+                                    <button type="button" id="subcategorysubmit"
+                                        class="btn btn-space btn-primary">Submit</button>
+                                    <button type="button" id="subcategorycancle"
+                                        class="btn btn-space btn-secondary">Cancel</button>
                                 </p>
                             </div>
                         </form>
@@ -117,15 +124,22 @@
                                     <th>SubCategory</th>
                                     <th>Parent</th>
                                     <th>Created On</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
+
                                 <% categories[1].forEach((subcategory,index)=>{%>
                                 <tr>
                                     <td><%= index+1%></td>
                                     <td><%= subcategory.SubCategoryName%></td>
                                     <td><%= subcategory.CategoryName%></td>
                                     <td><%= date.format(subcategory.CreatedOn,'DD MMM YY')%></td>
+                                    <td>
+                                        <a class="nav-link"
+                                            onclick="editSubCategory(<%= JSON.stringify(subcategory)%>)"><i
+                                                class="fas fa-edit"></i></a>
+                                    </td>
                                 </tr>
                                 <%})%>
                                 </tfoot>
@@ -134,8 +148,92 @@
                 </div>
             </div>
         </div>
-
     </div>
+
+
+
+
+
+
+    <div class="modal fade" id="editcategorymodal" tabindex="-1" role="dialog" aria-labelledby="editcategorymodalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editcategorymodalLabel">Edit Category</h5>
+                </div>
+                <div class="modal-body">
+                    <form id="editcategoryform" data-parsley-validate="" novalidate="">
+                        <div class="form-group row">
+                            <label for="editcategoryname" class="col-3 col-lg-2 col-form-label text-right">Name</label>
+                            <div class="col-9 col-lg-10">
+                                <input id="editcategoryname" type="text" required="" data-parsley-type="text"
+                                    placeholder="Category Name" class="form-control">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="editcategorycancle" class="btn btn-secondary"
+                        data-dismiss="modal">Close</button>
+                    <button type="button" id="editcategorysubmit" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="modal fade" id="editsubcategorymodal" tabindex="-1" role="dialog" aria-labelledby="editsubcategorymodalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editsubcategorymodalLabel">Edit SubCategory</h5>
+            </div>
+            <div class="modal-body">
+                <form id="editsubcategoryform" data-parsley-validate="" novalidate="">
+                    <div class="form-group row">
+                        <label for="editsubcategoryname" class="col-3 col-lg-2 col-form-label text-right">Name</label>
+                        <div class="col-9 col-lg-10">
+                            <input id="editsubcategoryname" type="text" required="" data-parsley-type="text"
+                                placeholder="SubCategory Name" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="editparentcategory"
+                            class="col-3 col-lg-2 col-form-label text-right">Category</label>
+                        <div class="col-9 col-lg-10">
+                            <select id="editparentcategory" class="form-control form-control-lg">
+                                <option selected disabled value="">Select Parent Category</option>
+                                <% categories[0].forEach((category)=>{%>
+                                <option value="<%= category.CategoryID%>"><%= category.CategoryName%></option>
+                                <%})%>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="editsubcategorycancle" class="btn btn-secondary"
+                    data-dismiss="modal">Close</button>
+                <button type="button" id="editsubcategorysubmit" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
 </div>
 
 
